@@ -21,6 +21,7 @@ export default class Game extends Component {
       firstSelection: null,
       secondSelection: null,
     }
+    this.newGame();
   }
 
   resetCards = () =>{
@@ -37,7 +38,15 @@ export default class Game extends Component {
   }
 
   resetTurns = () =>{
-
+    const {move} = this.state;
+    const step = move.getSteps();
+    const maxStep = move.getMaxSteps();
+    const newMove = new Move(maxStep, step+1);
+    this.setState({
+      firstSelection: null,
+      secondSelection: null,
+      move: newMove,
+    })
   }
 
   newGame = () => {
@@ -94,7 +103,7 @@ export default class Game extends Component {
 
 export class Time {
   constructor(maxTime = -1){
-    // time = -1 indicates that user doesn't limit the time
+    // maxTime = -1 indicates that user doesn't limit the time
     this.maxTime = maxTime;
     this.remainTime = maxTime;
   }
@@ -115,16 +124,22 @@ export class Time {
 }
 
 export class Move {
-  constructor(maxMove = -1){
-    // move = -1 indicates that user doesn't limit the moves
+  constructor(maxMove = -1, moveSteps = 0){
+    // maxMove = -1 indicates that user doesn't limit the moves
     this.maxMove = maxMove;
-    this.moveSteps = 0;
+    this.moveSteps = moveSteps;
   }
   setMaxMoves(maxMove){
     this.maxMove = maxMove;
   }
   setSteps (step) {
     this.moveSteps = step;
+  }
+  getSteps () {
+    return this.moveSteps;
+  }
+  getMaxSteps () {
+    return this.maxMove;
   }
   getRemainSteps () {
     if(this.maxMove === -1){
