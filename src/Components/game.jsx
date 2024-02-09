@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 
 import Card from './card';
+import Time from '../Models/Time';
+import Move from '../Models/Move';
+import Score from '../Models/Score';
+import Difficulty from '../Models/Difficulty';
 import './game.css'
 import { cardEmojis } from '../Utils/cardEmojis';
 
@@ -98,68 +102,5 @@ export default class Game extends Component {
         <p>Total Score: {score}</p>
       </div>
     )
-  }
-}
-
-export class Time {
-  constructor(maxTime = -1){
-    // maxTime = -1 indicates that user doesn't limit the time
-    this.maxTime = maxTime;
-    this.remainTime = maxTime;
-  }
-  setMaxTime(maxTime){
-    this.maxTime = maxTime;
-  }
-  setRemainTime(remainTime){
-    this.remainTime = remainTime;
-  }
-  getRemainTime () {
-    if(this.maxTime === -1){
-      return '∞';
-    }
-    else{
-      return this.remainTime;
-    }
-  }
-}
-
-export class Move {
-  constructor(maxMove = -1, moveSteps = 0){
-    // maxMove = -1 indicates that user doesn't limit the moves
-    this.maxMove = maxMove;
-    this.moveSteps = moveSteps;
-  }
-  setMaxMoves(maxMove){
-    this.maxMove = maxMove;
-  }
-  setSteps (step) {
-    this.moveSteps = step;
-  }
-  getSteps () {
-    return this.moveSteps;
-  }
-  getMaxSteps () {
-    return this.maxMove;
-  }
-  getRemainSteps () {
-    if(this.maxMove === -1){
-      return '∞';
-    }
-    else{
-      return this.maxMove - this.moveSteps;
-    }
-  }
-}
-
-export class Score {
-  constructor(score = 0){
-    this.score = score;
-  }
-}
-
-export class Difficulty {
-  constructor(cardNum = 16){
-    //default card number is 16, a 4x4 game board
-    this.cardNum = cardNum;
   }
 }
