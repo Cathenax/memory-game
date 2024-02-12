@@ -3,10 +3,9 @@ This project is for the NEU CS5010 project one:  Object Oriented Programming
 Implemented by Siyuan Liu
 
 ## How to start the game
-In the project directory, you can run:
 
 ### Development Mode 
-Run `npm install` and `npm start` to run this app in the development mode  
+In the project directory, you can run: `npm install` and `npm start` to run this app in the development mode  
 Open http://localhost:3000 to view it in your browser.
 
 ### Start It Online
