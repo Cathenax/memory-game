@@ -3,6 +3,7 @@ export default class Time {
     // maxTime = -1 indicates that user doesn't limit the time
     this.maxTime = maxTime;
     this.remainTime = maxTime;
+    this.time = 0;
   }
   setMaxTime(maxTime){
     this.maxTime = maxTime;
@@ -17,5 +18,11 @@ export default class Time {
     else{
       return this.remainTime;
     }
+  }
+  setTime (time){
+    this.time = time;
+  }
+  getTime (time){
+    return this.time;
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import question from '../Utils/question.png';
+import './card.css';
 
 export default class Card extends Component {
   static propTypes = {
@@ -10,29 +11,38 @@ export default class Card extends Component {
   }
   constructor(props){
     super(props);
-    const {id, card, disabled, handleCardClick} = this.props;
-    const {emoji, emojiId, flipped, matchFound} = card
+    const {id, card, handleCardClick} = this.props;
     this.state = {
       id: id,
-      emoji: emoji,
-      emojiId: emojiId,
-      flipped: flipped,
-      matchFound: matchFound,
-      disabled: disabled,
+      card: card,
       handleCardClick: handleCardClick,
     }
   }
+  //update the card
+  componentDidUpdate(prevProps) {
+    if (prevProps.card !== this.props.card) {
+        this.setState({ card: this.props.card });
+    }
+  }
   render() {
-    const {id, emoji, emojiId, flipped, matchFound, disabled, handleCardClick} = this.state;
+    const {id, card, handleCardClick} = this.state;
+    const {emoji, emojiId, flipped, matchFound, disabled} = card;
+    var status;
+    if(matchFound){
+      status = true;
+    }
+    else{
+      status = disabled;
+    }
     return (
       <button 
-        className={`card ${matchFound ? "matched" : ""}`} 
-        disabled={disabled} 
+        className='container'
+        disabled={status} 
         onClick={() => handleCardClick(id)} 
         data-id={emojiId}
         id={id}
       >
-        {flipped ? <div>{emoji}</div> : <img src={question} alt="?" width={80}/>}
+        {flipped ? <div className='emoji'>{emoji}</div> : <img src={question} alt="?"/>}
       </button>
     )
   }
