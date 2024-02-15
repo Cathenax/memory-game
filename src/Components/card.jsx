@@ -41,7 +41,7 @@ export default class Card extends Component {
         data-id={emojiId}
         id={id}
       >
-        {flipped ? <div className='emoji'>{emoji}</div> : <img src={question} alt="?"/>}
+        {flipped ? <div className='emoji'>{emoji}</div> : <div className='emoji'>{'❓'}</div>}
       </button>
     )
   }

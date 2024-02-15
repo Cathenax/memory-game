@@ -124,7 +124,7 @@ export default class Game extends Component {
   }
 
   newGame = () => {
-    //show loading for have a second
+    //Todo: show loading for have a second
     this.resetMoveAndScore();
     this.resetCards();
     this.resetTurns();
