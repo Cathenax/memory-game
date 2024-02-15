@@ -10,7 +10,7 @@ Open http://localhost:3000 to view it in your browser.
 
 ### Start It Online
 You can click the link below to start the game online  
-Deployment not yet finished
+https://cathenax.github.io/memory-game/
 
 ## Design Document
 See the document at: https://docs.google.com/document/d/1IB69OoaHRtIhQLVpsq8wZp-09hB83EoQ/edit?usp=sharing&ouid=118056018903100166621&rtpof=true&sd=true
