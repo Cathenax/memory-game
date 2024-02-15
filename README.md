@@ -1,7 +1,7 @@
 # Memory Game 
 This project is for the NEU CS5010 project one:  Object Oriented Programming.  
 Memory Game is a type of card game where the player's objective is to find matching pairs of cards by flipping them over two at a time.   
-The cards are initially arranged face-down, and the player needs to remember the position of different cards as they flip them over in pairs.
+The cards are initially arranged face-down, and the player needs to remember the position of different cards as they flip them over in pairs.  
 Implemented by Siyuan Liu.
 
 ## How to start the game
