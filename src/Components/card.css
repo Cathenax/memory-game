@@ -1,10 +1,20 @@
 .container {
   overflow: hidden;
-  min-width: 60px;
-  min-height: 60px;
 }
 
-.emoji {
-  transform-origin: center; 
-  transform: scale(3);
+/* 使用媒体查询根据屏幕宽度来选择使用vw还是px */
+@media (max-width: 800px) {
+  .container {
+    font-size: 4vw; /* 在小屏幕上使用vw单位 */
+    min-width: 4vw;
+    min-height: 4vw;
+  }
+}
+
+@media (min-width: 801px) {
+  .container {
+    font-size: 40px; /* 在大屏幕上使用px单位 */
+    min-width: 80px;
+    min-height: 80px;
+  }
 }

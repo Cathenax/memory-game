@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import question from '../Utils/question.png';
 import './card.css';
 
 export default class Card extends Component {
