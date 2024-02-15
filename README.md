@@ -13,7 +13,7 @@ You can click the link below to start the game online
 Deployment not yet finished
 
 ## Design Document
-See the document at:  https://drive.google.com/file/d/1FpQNHnERnRFhVZoCx5S5MDuyQGS8f4fS/view?usp=sharing
+See the document at: https://docs.google.com/document/d/1IB69OoaHRtIhQLVpsq8wZp-09hB83EoQ/edit?usp=sharing&ouid=118056018903100166621&rtpof=true&sd=true
 
 ## Presentation Video
 Not yet finished
