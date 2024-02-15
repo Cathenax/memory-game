@@ -27,6 +27,16 @@ export default class Game extends Component {
     this.diffRef = React.createRef();
   }
 
+  resetMoveAndScore = () => {
+    const {move} = this.state;
+    const newMove = new Move(move.getMaxSteps());
+    const newScore = new Score();
+    this.setState({
+      move: newMove,
+      score: newScore,
+    })
+  }
+
   resetCards = () =>{
     const numOfCards = this.state.difficulty.cardNum / 2;
     const allCard = cardEmojis.slice(0,numOfCards);
@@ -115,7 +125,7 @@ export default class Game extends Component {
 
   newGame = () => {
     //show loading for have a second
-    
+    this.resetMoveAndScore();
     this.resetCards();
     this.resetTurns();
   }
