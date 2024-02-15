@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button, Modal, Select, Form} from 'antd';
 
 import Card from './card';
 import Time from '../Models/Time';
@@ -21,7 +22,9 @@ export default class Game extends Component {
       score: score,
       difficulty: difficulty,
       playing: true,
+      showStatus: false,
     };
+    this.diffRef = React.createRef();
   }
 
   resetCards = () =>{
@@ -55,8 +58,8 @@ export default class Game extends Component {
   matchCards = () =>{
     const {firstSelection, secondSelection, difficulty, cards, move, score} = this.state;
     const delayTime = difficulty.getDelayTime();
-    var newCards;
-    var newScore = score;
+    let newCards;
+    let newScore = score;
     //if only choose one or zero cards
     if(!firstSelection || !secondSelection){
       return;
@@ -111,7 +114,8 @@ export default class Game extends Component {
   }
 
   newGame = () => {
-     //default value of the game;
+    //show loading for have a second
+    
     this.resetCards();
     this.resetTurns();
   }
@@ -151,6 +155,41 @@ export default class Game extends Component {
         cards: newCards,
       })
     }
+  }
+
+  updateSettings = () => {
+    const difficultyOption = this.diffRef.current.getFieldsValue().difficulty;
+    let cardNumber;
+    if(difficultyOption === 'Easy'){
+      cardNumber = 16;
+    }
+    else if(difficultyOption === 'Medium'){
+      cardNumber = 36;
+    }
+    else{
+      cardNumber = 64;
+    }
+    const newDifficulty = new Difficulty(cardNumber);
+    this.setState({
+      difficulty: newDifficulty,
+      showStatus: false,
+    },()=> {
+      this.newGame();
+    })
+  }
+
+  openSettings = () => {
+    this.setState({
+      showStatus:true,
+    })
+  }
+
+  handleCancel = () => {
+    //reset the form
+    this.diffRef.current.resetFields();
+    this.setState({
+      showStatus:false,
+    })
   }
 
   //handle the click event of a card
@@ -215,12 +254,16 @@ export default class Game extends Component {
   }
 
   render() {
-    const {time, move, score, difficulty, cards, playing} = this.state;
+    const {time, move, score, difficulty, cards, playing, showStatus} = this.state;
     const columns = Math.sqrt(difficulty.getCardNum());
     return (
       <div>
-        <button onClick={() => this.newGame()}>New Game</button>
-        <button onClick={() => this.stopOrResume()}>{playing? 'Stop' : 'Resume'}</button>
+        <div className='gameheader'>
+          <Button size={'large'} onClick={() => this.newGame()}>New Game</Button>
+          <Button size={'large'} onClick={() => this.stopOrResume()}>{playing? 'Stop' : 'Resume'}</Button>
+          <Button size={'large'} onClick={() => this.openSettings()}>Settings</Button>
+        </div>
+        
         <div 
           className="gameboard"
           columns={columns}
@@ -237,12 +280,50 @@ export default class Game extends Component {
               )
             }))
           }
+          <Modal 
+            title="Settings" 
+            open={showStatus} 
+            onOk={this.updateSettings} 
+            onCancel={this.handleCancel}
+            okText="OK and Restart"
+          >
+            <Form ref={this.diffRef}>
+              <Form.Item 
+                name='difficulty'
+                initialValue={'Easy'}
+                label='Difficulty'
+              >
+                <Select 
+                  style={{
+                    width: 120,
+                  }}
+                  options={[
+                    {
+                      value: 'Easy',
+                      label: 'Easy',
+                    },
+                    {
+                      value: 'Medium',
+                      label: 'Medium',
+                    },
+                    {
+                      value: 'Hard',
+                      label: 'Hard',
+                    },
+                  ]}
+                />
+              </Form.Item>
+            </Form>
+          </Modal>
         </div>
-        <p>Total Moves: {move.getSteps()}</p>
-        <p>Moves Remain: {move.getRemainSteps()}</p>
-        <p>Total Time: {time.getTime()}</p>
-        <p>Time Remain: {time.getRemainTime()}</p>
-        <p>Total Score: {score.getScore()}</p>
+        <div className='gamefooter'>
+          <span>Total Moves: {move.getSteps()}</span> 
+          <span>Moves Remain: {move.getRemainSteps()}</span>
+          <span>Total Time: {time.getTime()}</span>
+          <span>Time Remain: {time.getRemainTime()}</span>
+          <span>Total Score: {score.getScore()}</span>
+        </div>
+        
       </div>
     )
   }

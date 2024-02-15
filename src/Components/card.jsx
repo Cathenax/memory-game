@@ -6,7 +6,6 @@ import './card.css';
 export default class Card extends Component {
   static propTypes = {
     card: PropTypes.object.isRequired,  //card object from parent component(game)
-    disabled: PropTypes.bool.isRequired, 
     handleCardClick: PropTypes.func.isRequired,
   }
   constructor(props){
