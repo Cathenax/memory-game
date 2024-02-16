@@ -8,6 +8,7 @@ import Score from '../Models/Score';
 import Difficulty from '../Models/Difficulty';
 import './game.css'
 import { cardEmojis } from '../Utils/cardEmojis';
+import MyDB from '../Utils/firebase';
 
 export default class Game extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ export default class Game extends Component {
     const move = new Move();
     const time = new Time();
     this.state = {
+      cards: [],
       move: move,
       time: time,
       score: score,
@@ -25,28 +27,46 @@ export default class Game extends Component {
       showStatus: false,
     };
     this.diffRef = React.createRef();
+    this.db = new MyDB();
   }
 
-  resetMoveAndScore = () => {
-    const {move} = this.state;
-    const newMove = new Move(move.getMaxSteps());
-    const newScore = new Score();
+  resetMoveAndScore = (dbmove, dbscore) => {
+    let newMove, newScore;
+    //no data from the db
+    if(!dbmove || !dbscore){
+      const {move} = this.state;
+      newMove = new Move(move.getMaxSteps());
+      newScore = new Score();
+      
+    }
+    else{ //load data from the db
+      newMove = new Move(dbmove.maxstep, dbmove.step);
+      newScore = new Score(dbscore);
+    }
     this.setState({
       move: newMove,
       score: newScore,
     })
   }
 
-  resetCards = () =>{
-    const numOfCards = this.state.difficulty.cardNum / 2;
-    const allCard = cardEmojis.slice(0,numOfCards);
-    const shuffled = [...allCard,...allCard]
-      .sort(() => Math.random() - .5)
-      .map((card, index) => {
-        return ({...card, disabled:false, key: index})
-      });
+  resetCards = (dbcards) =>{
+    let newCards;
+    //no data from db
+    if(!dbcards){
+      const numOfCards = this.state.difficulty.cardNum / 2;
+      const allCard = cardEmojis.slice(0,numOfCards);
+      newCards = [...allCard,...allCard]
+        .sort(() => Math.random() - .5)
+        .map((card, index) => {
+          return ({...card, disabled:false, key: index})
+        });
+    }
+    else{
+      newCards = dbcards;
+      debugger;
+    }
     this.setState({
-      cards: shuffled,
+      cards: newCards,
     });
   }
 
@@ -62,6 +82,32 @@ export default class Game extends Component {
         move: newMove,
       })
     }
+  }
+
+  resetTime = (dbtime) => {
+    let newTime;
+    if(!dbtime){
+      newTime = new Time();
+    }
+    else{
+      newTime = new Time(dbtime.maxtime, dbtime.time);
+    }
+    this.setState({
+      time: newTime,
+    })
+  }
+
+  resetDifficulty = (dbdiffculty) => {
+    let newDiff;
+    if(!dbdiffculty){
+      newDiff = new Difficulty();
+    }
+    else{
+      newDiff = new Difficulty(dbdiffculty.cardnum, dbdiffculty.delaytime);
+    }
+    this.setState({
+      difficulty: newDiff,
+    })
   }
 
   //check two cliked cards are a match or not
@@ -130,7 +176,7 @@ export default class Game extends Component {
     this.resetTurns();
   }
 
-  stopOrResume = () => {
+  stopOrResume = async() => {
     const {playing, cards} = this.state;
     //stop the game
     if(playing){
@@ -259,10 +305,48 @@ export default class Game extends Component {
     // console.log(clickedCard);
   }
 
-  componentDidMount () {
-    this.newGame();
+  handleWindowClose = async(event) => {
+    event.preventDefault();
+    console.log('window is closing');
+    //try to store the data before window close
+    await this.saveGameStatus();
   }
 
+  saveGameStatus = async() => {
+    //prepare data to store in the firestore
+    const {cards, score, time, move, difficulty} = this.state;
+    const userScore = score.getScore();
+    const userTime = {time:time.getTime(), maxtime: time.getMaxTime()};
+    const userMove = {step:move.getSteps(), maxstep:move.getMaxSteps()};
+    const userDiff = {cardnum:difficulty.getCardNum(), delaytime: difficulty.getDelayTime()};
+    const userData = {score:userScore, time:userTime, cards, move:userMove, difficulty:userDiff};
+    await this.db.saveGameStatus(userData);
+  }
+
+  getGameStatus = async() => {
+    //get game data from firestore db
+    await this.db.getGameStatus();
+    const userData = this.db.user;
+    const {move, score, time, difficulty, cards} = userData;
+    debugger;
+    if(!userData){
+      this.newGame();
+    }
+    else{
+      //load data
+      this.resetMoveAndScore(move,score);
+      this.resetCards(cards);
+      this.resetTurns();
+      this.resetDifficulty(difficulty);
+      this.resetTime(time);
+    }
+  }
+
+  async componentDidMount () {
+    await this.getGameStatus();
+    window.addEventListener('beforeunload', this.handleWindowClose);
+  }
+  
   render() {
     const {time, move, score, difficulty, cards, playing, showStatus} = this.state;
     const columns = Math.sqrt(difficulty.getCardNum());

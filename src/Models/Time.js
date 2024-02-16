@@ -1,9 +1,9 @@
 export default class Time {
-  constructor(maxTime = -1){
+  constructor(maxTime = -1, time = 0){
     // maxTime = -1 indicates that user doesn't limit the time
     this.maxTime = maxTime;
     this.remainTime = maxTime;
-    this.time = 0;
+    this.time = time;
   }
   setMaxTime(maxTime){
     this.maxTime = maxTime;
@@ -22,7 +22,10 @@ export default class Time {
   setTime (time){
     this.time = time;
   }
-  getTime (time){
+  getTime (){
     return this.time;
+  }
+  getMaxTime (){
+    return this.maxTime;
   }
 }
