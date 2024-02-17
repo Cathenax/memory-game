@@ -30,16 +30,17 @@ export default class Game extends Component {
     this.db = new MyDB();
   }
 
-  resetMoveAndScore = (dbmove, dbscore) => {
-    let newMove, newScore;
+  resetMoveAndScore = (dbmove = null, dbscore = null) => {
+    let newMove, newScore; 
     //no data from the db
-    if(!dbmove || !dbscore){
+    if(dbmove === null || dbscore === null){
       const {move} = this.state;
       newMove = new Move(move.getMaxSteps());
       newScore = new Score();
       
     }
     else{ //load data from the db
+     
       newMove = new Move(dbmove.maxstep, dbmove.step);
       newScore = new Score(dbscore);
     }

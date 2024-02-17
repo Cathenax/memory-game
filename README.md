@@ -18,6 +18,9 @@ Open http://localhost:3000 to view it in your browser.
 See the document at: https://docs.google.com/document/d/1IB69OoaHRtIhQLVpsq8wZp-09hB83EoQ/edit?usp=sharing&ouid=118056018903100166621&rtpof=true&sd=true
 
 ## Presentation Video
-Not yet finished
+See on Youtube:  
+https://youtu.be/vg4Kyv7hdqw  
+Or on Google Drive:  
+https://drive.google.com/file/d/1ROnyiYY-X1kc5M2man_xOKTmFCLKzkwM/view?usp=sharing
 
 
