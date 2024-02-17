@@ -63,7 +63,6 @@ export default class Game extends Component {
     }
     else{
       newCards = dbcards;
-      debugger;
     }
     this.setState({
       cards: newCards,
@@ -328,7 +327,6 @@ export default class Game extends Component {
     await this.db.getGameStatus();
     const userData = this.db.user;
     const {move, score, time, difficulty, cards} = userData;
-    debugger;
     if(!userData){
       this.newGame();
     }
